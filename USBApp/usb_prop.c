@@ -168,98 +168,37 @@ void Virtual_Com_Port_Reset(void)
 /* tx buffer base address */
 //#define ENDP1_BUFF0_ADDR        (0xC0)
 //#define ENDP1_BUFF1_ADDR        (0x100)
-//#define ENDP2_BUFF0_ADDR        (0x140)
-//#define ENDP2_BUFF1_ADDR        (0x180)
-
-//#define DOUBLE    
-//#ifdef DOUBLE
-
+//#define ENDP2_BUFF0_ADDR        (0x1C0)
+//#define ENDP2_BUFF1_ADDR        (0x1D0)
+  
   // Initialize Endpoint 1
   
   SetEPType(ENDP1, EP_BULK);
-  SetEPTxAddr(ENDP1, ENDP1_BUFF1_ADDR);
+  SetEPTxAddr(ENDP1, ENDP1_BUFF_ADDR);
   SetEPRxCount(ENDP1,64);
-//  SetEPTxStatus(ENDP1, EP_TX_VALID);
   SetEPTxStatus(ENDP1, EP_TX_NAK);
-  SetEPRxStatus(ENDP1, EP_RX_DIS);    
-  
-/*  
-  SetEPType(ENDP1, EP_BULK);  // IN    
-  SetEPDoubleBuff(ENDP1);
-  SetEPDblBuffAddr(ENDP1, ENDP1_BUFF0_ADDR , ENDP1_BUFF1_ADDR );
-  SetEPDblBuffCount(ENDP1, EP_DBUF_IN,64);  
-  
-  ClearDTOG_RX(ENDP1);
-//  ToggleDTOG_RX(ENDP1);  //SW_BUF    
-  ClearDTOG_TX(ENDP1);   
-//  ToggleDTOG_TX(ENDP1);  
-  
-//  SetEPTxStatus(ENDP1, EP_TX_NAK);
-  SetEPTxStatus(ENDP1, EP_TX_VALID);   
-  SetEPRxStatus(ENDP1, EP_RX_DIS);  
-*/  
+  SetEPRxStatus(ENDP1, EP_RX_DIS);
   
   // Initialize Endpoint 2
   SetEPType(ENDP2, EP_BULK);
-  SetEPRxAddr(ENDP2, ENDP2_BUFF1_ADDR);
+  SetEPRxAddr(ENDP2, ENDP2_BUFF_ADDR);
   SetEPRxCount(ENDP2, 64);
   SetEPRxStatus(ENDP2, EP_RX_VALID);
   SetEPTxStatus(ENDP2, EP_TX_DIS);
-  
- /* 
-  SetEPDoubleBuff(ENDP2);
-  SetEPType(ENDP2, EP_BULK);  // OUT
-  SetEPDblBuffAddr(ENDP2, ENDP2_BUFF0_ADDR , ENDP2_BUFF1_ADDR );
-  SetEPDblBuffCount(ENDP2, EP_DBUF_OUT, 64);
-  ClearDTOG_RX(ENDP2);
-  ClearDTOG_TX(ENDP2);
-  ToggleDTOG_TX(ENDP2);   
-  SetEPRxStatus(ENDP2, EP_RX_VALID);
-  SetEPTxStatus(ENDP2, EP_TX_DIS);  
-*/
-  
+
   // Initialize Endpoint 3  // IN cmd
   SetEPType(ENDP3, EP_BULK);
-  SetEPTxAddr(ENDP3, 0x1C0);
+  SetEPTxAddr(ENDP3, ENDP3_BUFF_ADDR);
+  SetEPRxCount(ENDP3, 64);
   SetEPTxStatus(ENDP3, EP_TX_NAK);
   SetEPRxStatus(ENDP3, EP_RX_DIS);  
   
   // Initialize Endpoint 4 // OUT cmd
   SetEPType(ENDP4, EP_BULK);
-  SetEPRxAddr(ENDP4, 0x1D0 );
-  SetEPRxCount(ENDP4, 16);
+  SetEPRxAddr(ENDP4, ENDP4_BUFF_ADDR);
+  SetEPRxCount(ENDP4, 64);
   SetEPRxStatus(ENDP4, EP_RX_VALID);
   SetEPTxStatus(ENDP4, EP_TX_DIS);    
-
-//#else
-/*  
-  // Initialize Endpoint 1
-  SetEPType(ENDP1, EP_BULK);
-  SetEPTxAddr(ENDP1, ENDP1_TXADDR);
-  SetEPTxStatus(ENDP1, EP_TX_NAK);
-  SetEPRxStatus(ENDP1, EP_RX_DIS);  
-
-    // Initialize Endpoint 2
-  SetEPType(ENDP2, EP_BULK);
-  SetEPRxAddr(ENDP2, ENDP2_RXADDR);
-  SetEPRxCount(ENDP2, VIRTUAL_COM_PORT_DATA_SIZE);
-  SetEPRxStatus(ENDP2, EP_RX_VALID);
-  SetEPTxStatus(ENDP2, EP_TX_DIS);  
-  
-  // Initialize Endpoint 3 
-  SetEPType(ENDP3, EP_BULK);
-  SetEPTxAddr(ENDP3, ENDP3_TXADDR);
-  SetEPTxStatus(ENDP3, EP_TX_NAK);
-  SetEPRxStatus(ENDP3, EP_RX_DIS);  
-  
-   // Initialize Endpoint 4 
-  SetEPType(ENDP4, EP_BULK);
-  SetEPRxAddr(ENDP4, ENDP4_RXADDR);
-  SetEPRxCount(ENDP4, VIRTUAL_COM_PORT_DATA_SIZE);
-  SetEPRxStatus(ENDP4, EP_RX_VALID);
-  SetEPTxStatus(ENDP4, EP_TX_DIS); 
-*/  
-//#endif
   
   /* Set this device to respsonse on default address */
   SetDeviceAddress(0);  

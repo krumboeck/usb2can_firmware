@@ -1,22 +1,4 @@
 
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version
-// 2 of the License, or (at your option) any later version.
-//
-// Copyright (C) 2005-2012 Gediminas Simanskis,8devices,<gediminas@8devices.com>
-// 
-// This file is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// 
-// You should have received a copy of the GNU General Public License
-// along with this file see the file COPYING.  If not, write to
-// the Free Software Foundation, 59 Temple Place - Suite 330,
-// Boston, MA 02111-1307, USA.
-
-
 #include "lists.h"
 #include "messages.h"
 #include "string.h" 
@@ -32,7 +14,7 @@
 bool  USBdataCANmsg(canmsg *CanMsg)
 {
   u8  buflen;
-  u8  buf[65];  
+  u8  buf[64];  
   
 //  if( bRun == FALSE )    
 //    return FALSE;    
@@ -42,7 +24,7 @@ bool  USBdataCANmsg(canmsg *CanMsg)
   if( buflen >= sizeof(buf))
     return FALSE;
   
-  PMAToUserBufferCopy( buf, ENDP2_BUFF1_ADDR, buflen );     
+  PMAToUserBufferCopy( buf, ENDP2_BUFF_ADDR, buflen );     
   
   if( (buf[0] != 0x55) || (buf[15] != 0xAA) || (buflen > 16) )     
     return FALSE;   
@@ -89,7 +71,7 @@ void ClearUSBdataBuffer(void)
 
 void  CANtoUSBdata( canmsg *rxmsg0, u8 num )
 {
-  u8  sendData[65];
+  u8  sendData[64];
   u8  size = 0;
   u8  x;
   canmsg  *msg0; 
@@ -117,7 +99,7 @@ void  CANtoUSBdata( canmsg *rxmsg0, u8 num )
         sendData[ size++ ] = 0xAA; // FrameEnd                             
     }   
               
-        UserToPMABufferCopy(sendData,ENDP1_BUFF1_ADDR,size);
+        UserToPMABufferCopy(sendData,ENDP1_BUFF_ADDR,size);
         SetEPTxCount(ENDP1,size);
         SetEPTxValid(ENDP1);                           
 }
@@ -152,11 +134,11 @@ void GetUSBcmd(void)
   u8  size;
   CAN_TIMINGS   cantimings;  
   u16 tmp;
-  u8  buff[20];
+  u8  buff[64];
   u32 res;
   
   count_cmd_out = GetEPRxCount(ENDP4);
-  PMAToUserBufferCopy( buffer_cmd_out,0x1D0 /*ENDP4_RXADDR*/, count_cmd_out);
+  PMAToUserBufferCopy( buffer_cmd_out,ENDP4_BUFF_ADDR, count_cmd_out);
     
   size = count_cmd_out;
   memcpy(buff,buffer_cmd_out,16);
@@ -292,7 +274,7 @@ void GetUSBcmd(void)
   count_cmd_in = size;
   
   /****** issiunciam *****/
-  UserToPMABufferCopy(buffer_cmd_in,0x1C0/*ENDP3_TXADDR*/, count_cmd_in);
+  UserToPMABufferCopy(buffer_cmd_in,ENDP3_BUFF_ADDR, count_cmd_in);
   SetEPTxCount(ENDP3,count_cmd_in);
   SetEPTxValid(ENDP3);  
 

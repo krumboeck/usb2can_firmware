@@ -48,10 +48,15 @@
 
 /* EP1  */
 /* tx buffer base address */
-//#define ENDP1_TXADDR        (0xC0)
-//#define ENDP2_RXADDR        (0x100)
-//#define ENDP3_TXADDR        (0x140)
-//#define ENDP4_RXADDR        (0x180)
+#define ENDP1_TXADDR        (0xC0)
+#define ENDP2_RXADDR        (0x100)
+#define ENDP3_TXADDR        (0x140)
+#define ENDP4_RXADDR        (0x180)
+
+#define ENDP1_BUFF_ADDR        (0xC0)
+#define ENDP2_BUFF_ADDR        (0x100)
+#define ENDP3_BUFF_ADDR        (0x140)
+#define ENDP4_BUFF_ADDR        (0x180)
 
 #define ENDP1_BUFF0_ADDR        (0xC0)
 #define ENDP1_BUFF1_ADDR        (0x100)

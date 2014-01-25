@@ -104,7 +104,7 @@ const u8 Virtual_Com_Port_ConfigDescriptor[] = {
 	USB_ENDPOINT_DESCRIPTOR_TYPE,	/* bDescriptorType: Endpoint */
 	0x83,	/* bEndpointAddress: (IN3) */
 	0x02,	/* bmAttributes: Bulk */
-	25,		/* wMaxPacketSize: */
+	64,		/* wMaxPacketSize: */
 	0x00,
 	0x00, 	/* bInterval */
 
@@ -114,7 +114,7 @@ const u8 Virtual_Com_Port_ConfigDescriptor[] = {
 	USB_ENDPOINT_DESCRIPTOR_TYPE ,	/* bDescriptorType: Endpoint */
 	0x04,	/* bEndpointAddress: (OUT4) */
 	0x02,	/* bmAttributes: Bulk */
-	25,		/* wMaxPacketSize: */
+	64,		/* wMaxPacketSize: */
 	0x00,
 	0x00 	/* bInterval: ignore for Bulk transfer */
 };
