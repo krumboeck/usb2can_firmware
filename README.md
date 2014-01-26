@@ -27,26 +27,13 @@ Flash the device (Linux, Experimental)
 --------------------------------------
 * Download latest source code for dfu-util (http://dfu-util.gnumonks.org/)
 * Download patch from http://lists.gnumonks.org/pipermail/dfu-util/attachments/20140124/1abbc049/attachment.bin
-* Patch the sources
-* Remove following rows from main.c
-
-```C
-    if (((file.idVendor  != 0xffff && file.idVendor  != runtime_vendor) ||
-         (file.idProduct != 0xffff && file.idProduct != runtime_product)) &&
-        ((file.idVendor  != 0xffff && file.idVendor  != dfu_root->vendor) ||
-         (file.idProduct != 0xffff && file.idProduct != dfu_root->product))) {
-            errx(EX_IOERR, "Error: File ID %04x:%04x does "
-                    "not match device (%04x:%04x or %04x:%04x)",
-                    file.idVendor, file.idProduct,
-                    runtime_vendor, runtime_product,
-                    dfu_root->vendor, dfu_root->product);
-    }
-```
+* Download patch from http://marc.info/?l=linux-can&m=139064789514969&q=p3
+* Apply the patches
 * Build dfu-util
 
 ```Bash
 ./autogen.sh
-./configure.sh
+./configure
 make
 make install
 ```
