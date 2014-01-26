@@ -26,9 +26,15 @@ extern "C" {
 
 #pragma language=extended
 
+#ifdef __GNUC__
+int __low_level_init(void);
+
+int __low_level_init(void)
+#else
 __interwork int __low_level_init(void);
 
 __interwork int __low_level_init(void)
+#endif
 {
   /*==================================*/
   /*  Initialize hardware.            */

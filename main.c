@@ -30,7 +30,11 @@ volatile u8 count_data_in = 0;
 
 extern volatile u32 GlobalTick;
 
-extern unsigned short __checksum;
+#ifdef __GNUC__
+  unsigned short __checksum __attribute__ ((section(".crc")));
+#else
+  extern unsigned short __checksum;
+#endif
 extern unsigned int __checksum_begin;
 extern unsigned int __checksum_end;
 
