@@ -16,6 +16,11 @@ Build the Firmware
 You need "IAR Embedded Workbench for ARM" for building the sources.
 
 
+Flash your own firmware on USB2CAN device
+-----------------------------------------
+This is not possible, except you have the encryption key for the modified dfu boot loader.
+
+
 Flash the device (Windows)
 --------------------------
 * Install "DfuSe Demonstrator"
