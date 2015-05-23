@@ -8,7 +8,7 @@ THIS SOFTWARE COMES WITHOUT ANY WARRANTY!
 
 License
 -------
-License can be found at the top of every source file.
+Mostly GPLv2. Only some Include-Files from STMicroelectronics use a different license which can be found on the top of every affected source file.
 
 
 Build the Firmware
@@ -25,21 +25,24 @@ Flash the device (Windows)
 
 Flash the device (Linux, Experimental)
 --------------------------------------
-* Download latest source code for dfu-util (http://dfu-util.gnumonks.org/)
-* Download patch from http://lists.gnumonks.org/pipermail/dfu-util/attachments/20140124/1abbc049/attachment.bin
-* Download patch from http://marc.info/?l=linux-can&m=139064789514969&q=p3
-* Apply the patches
-* Build dfu-util
-
-```Bash
-./autogen.sh
-./configure
-make
-make install
-```
+* Install dfu-util (>= 0.8)
 * Press the button with a paper clip while connecting to USB port
 * Flash new firmware as root
 
 ```Bash
     dfu-util -d 0483:df11 -a 0 -D usb2can_1_5.dfu
 ```
+* Optional a new serial number can be flashed
+
+```Bash
+    dfu-util -d 0483:df11 -a 1 -D E000xxx_1_0.dfu
+```
+
+
+Known Problems
+--------------
+### Few USB controllers or drivers may not work properly
+Sometimes an USB hub helps. This is not a firmware issue, so it will never get fixed.
+
+### Device could not get initialized after connection loss
+This happens when a powered USB hub is used and the connection between the host and hub get lost. This is a firmware issue.
