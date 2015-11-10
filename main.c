@@ -1,4 +1,22 @@
 
+/*
+ *  USB2CAN firmware 
+ *
+ * Copyright (C) 2007-2015 Gediminas Simanskis (gedsim@gmail.com)
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published
+ * by the Free Software Foundation; version 2 of the License.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program.
+ */
+
 #include "75x_lib.h"
 #include "stdio.h"
 #include "main.h"
@@ -89,6 +107,8 @@ bool EP2_dataReady = FALSE;
 u16 sum = 0;
 const int zero = 0;
 
+// Suspend kintamieji
+extern unsigned long SuspendCnt;
 
 ///////////////////////////////////////////////////////////////////////////////
 // main
@@ -103,7 +123,7 @@ int main()
     debug();
   #endif        
 
-     sum = fast_crc16(sum,(unsigned char *)&__checksum_begin, (unsigned int)&__checksum_end -(unsigned int)&__checksum_begin + 1);
+     //sum = fast_crc16(sum,(unsigned char *)&__checksum_begin, (unsigned int)&__checksum_end -(unsigned int)&__checksum_begin + 1);
 
      if(sum!=__checksum)
      {
@@ -122,20 +142,34 @@ int main()
   Set_TB();  
   Set_USBClock();  
   USB_Interrupts_Config();
+  CAN_DISABLE();
   
-  setBlinkType( LED_TOGGLE_FAST );    
-  USB_Init();    
-  //CAN_Config();
+  bDeviceState = UNCONNECTED;
+  
+  SuspendCnt=0;
+  fSuspendEnabled=TRUE;
   
   CanListInit(&CanRXlist);
   CanListInit(&CanTXlist);
   
-  setBlinkType( LED_RED_STEADY );
    
   while(1)
   {    
+    if( bDeviceState == UNCONNECTED )
+    {
+      bRun = FALSE;
+      bRunNext = FALSE;
+      CAN_DISABLE();
+      CanListInit(&CanRXlist);
+      CanListInit(&CanTXlist);      
+      USB_Init(); 
+      SuspendCnt=0;
+      fSuspendEnabled=TRUE;
     
-//////////////// USB2CAN state changes //////////////////////    
+      EP1_busy = FALSE;
+      EP2_dataReady = FALSE;           
+    }
+    else{   
     
     tmp_bRunNext = bRunNext;
     tmp_bRun = bRun;
@@ -147,21 +181,13 @@ int main()
       else            
         setBlinkType( LED_RED_STEADY );                 
       
-     // betkoks busenu pasikeitimas
-     CanListClear( &CanTXlist );
-     CanListClear( &CanRXlist ); 
      TxCanFlag = FALSE;
-     
      ErrStatus = 0;
      ErrStatusNext = 0;
      ErrLec = 0;
      ErrLecNext = 0;
      USB2CAN_status = 0;
      StatisticsInit();
-     
-     /////// ! //////////
-     EP2_dataReady = FALSE;
-     SetEPRxValid(ENDP2);
      
      bRun = bRunNext;                    
     } 
@@ -276,7 +302,8 @@ int main()
 //   from CAN to USB data frames
 //
    
-     if( EP1_busy == FALSE ) // ziurim ar tuscias USB buferis
+     // ziurim ar tuscias USB buferis
+     if( EP1_busy == FALSE ) 
      {
        RxMsgCnt = 0;       
        if( CanListGet(&CanRXlist,&RxCanMsgList[0] ))       
@@ -290,9 +317,6 @@ int main()
             if( CanListGet(&CanRXlist,&RxCanMsgList[2] ))                                      
               RxMsgCnt++;              
          }
-                  
-//         CANtoUSBdata( &RxCanMsg0,&RxCanMsg1,&RxCanMsg2,RxMsgCnt );         
-         
          CANtoUSBdata( &RxCanMsgList[0],RxMsgCnt );
          EP1_busy = TRUE;
        }      
@@ -315,7 +339,7 @@ int main()
 //             Statistics.Overruns++;                 
        }
      }        
-          
+    } // if...else     
   }// while... 
 
 }// main...

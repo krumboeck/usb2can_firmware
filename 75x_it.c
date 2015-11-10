@@ -33,7 +33,7 @@
 #include "string.h"
 #include "buffers.h"
 
-extern EP1_IN_Callback();
+extern void EP1_IN_Callback();
 
 extern volatile u32  tim[];
 extern volatile u8   tindex;
@@ -382,7 +382,8 @@ void CAN_IRQHandler(void)
       else 
       {        
         Statistics.Overruns++;                 
-        Statistics.TransmitedDataBytes += TmpCanMsg.Dlc;
+        // WTF ?
+        //Statistics.TransmitedDataBytes += TmpCanMsg.Dlc; // <----- WTF ?
       }
 
        CAN_ReleaseRxMessage(msgobj);         

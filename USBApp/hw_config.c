@@ -248,9 +248,9 @@ void USB_Interrupts_Config(void)
 void USB_Cable_Config (FunctionalState NewState)
 {
      if (NewState == ENABLE)
-       GPIO_WriteBit(GPIO1, GPIO_Pin_0, (BitAction)(0));
-     else
        GPIO_WriteBit(GPIO1, GPIO_Pin_0, (BitAction)(1));
+     else
+       GPIO_WriteBit(GPIO1, GPIO_Pin_0, (BitAction)(0));
 }
 /*******************************************************************************
 * Function Name  :  UART0_Config_Default.  

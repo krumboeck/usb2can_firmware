@@ -18,6 +18,7 @@
 *******************************************************************************/
 
 /* Includes ------------------------------------------------------------------*/
+#include "leds.h"
 #include "usb_lib.h"
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -61,6 +62,8 @@ void USB_Init(void)
   pProperty = &Device_Property;
   pUser_Standard_Requests = &User_Standard_Requests;
   /* Initialize devices one by one */
+  setBlinkType( LED_TOGGLE_FAST );
   pProperty->Init();
+  setBlinkType( LED_RED_STEADY );
 }
 /******************* (C) COPYRIGHT 2006 STMicroelectronics *****END OF FILE****/

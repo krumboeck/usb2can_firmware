@@ -25,6 +25,7 @@
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 volatile u16 wIstr;  /* ISTR register last read value */
+unsigned long SuspendCnt=0;
 /* Extern variables ----------------------------------------------------------*/
 /* Private function prototypes -----------------------------------------------*/
 void USB_Istr(void);
@@ -127,6 +128,7 @@ void (*pEpInt_OUT[15])(void)={
 	EP14_OUT_Callback,
 	EP15_OUT_Callback
 };
+
 /*******************************************************************************
 * Function Name  : USB_Istr
 * Description    : handle the usb interrupt routines
@@ -185,15 +187,19 @@ void USB_Istr(void)
 		/* check if SUSPEND is possible */
 		if(fSuspendEnabled)
 		{
-			Suspend();
+		//	Suspend();
+                  SuspendCnt++;
+                  if( SuspendCnt >= 30)
+                  bDeviceState = UNCONNECTED;
 		}
-		else
-		{
+		//else
+		//{
 			/* if not possible then resume after xx ms */
-			Resume(RESUME_LATER);
-		}
+		//s	Resume(RESUME_LATER);
+		//}
 		/* clear of the ISTR bit must be done after setting of CNTR_FSUSP */
 		_SetISTR((u16)CLR_SUSP);
+                
 		#ifdef SUSP_CALLBACK
 		SUSP_Callback();
 		#endif
@@ -204,6 +210,9 @@ void USB_Istr(void)
 	if (wIstr & ISTR_SOF & wInterrupt_Mask)
 	{
 		_SetISTR((u16)CLR_SOF);
+                
+                 SuspendCnt=0;
+                
 		#ifdef SOF_CALLBACK
 		SOF_Callback();
 		#endif

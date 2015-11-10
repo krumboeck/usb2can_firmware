@@ -48,6 +48,7 @@ RESULT PowerOn(void);
 RESULT PowerOff(void);
 /* External variables --------------------------------------------------------*/
 extern  vu8 bDeviceState; /* USB device status */
+extern  vu8 bLastDeviceState; /* USB last device status */
 extern volatile bool fSuspendEnabled;  /* true when suspend is possible */
 
 #endif  /*__USB_PWR_H*/

@@ -26,12 +26,14 @@
 /* Private variables ---------------------------------------------------------*/
 volatile bool fCellSuspended;
 volatile u8 bDeviceState=UNCONNECTED; /* USB device status */
-volatile bool fSuspendEnabled=TRUE;  /* true when suspend is possible */
+volatile u8 bLastDeviceState=UNCONNECTED; /* USB last device status */
+volatile bool fSuspendEnabled=FALSE;  /* true when suspend is possible */
 
 struct {
 	volatile RESUME_STATE eState;
 	volatile u8 bESOFcnt;
 } ResumeS;
+
 /* Extern variables ----------------------------------------------------------*/
 /* Private function prototypes -----------------------------------------------*/
 /* Extern function prototypes ------------------------------------------------*/

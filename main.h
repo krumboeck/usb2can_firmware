@@ -3,7 +3,7 @@
 #define __MAIN_H
 
 #define FIRMWARE_MAJ_VER  1
-#define FIRMWARE_MIN_VER  5
+#define FIRMWARE_MIN_VER  7
 //1.4 ver. pataisyta CAN high speed USB dubliavimo problema (buvo 1.3 versijoje)
 
 typedef struct{
@@ -49,7 +49,7 @@ typedef struct{
 #define   EEPROM_CAN_REG2                   14
 #define   EEPROM_MASK                       15  
 #define   EEPROM_FILTER                     19
-#define   EEPROM_...                        23
+//#define   EEPROM_...                        23
 
 //Status LEC values
 #define   LEC_NO_ERROR                      0

@@ -26,6 +26,8 @@
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
+// Suspend kintamiejis
+extern unsigned long SuspendCnt;
 
 LINE_CODING linecoding =
 {
@@ -115,7 +117,6 @@ ONE_DESCRIPTOR String_Descriptor[] = {
 *******************************************************************************/
 void Virtual_Com_Port_init(void)
 {
-
   pInformation->Current_Configuration = 0;
   /* Connect the device */
   PowerOn();  
@@ -125,8 +126,7 @@ void Virtual_Com_Port_init(void)
   _SetCNTR(wInterrupt_Mask); /* set interrupts mask */
   pInformation->Current_Feature = Virtual_Com_Port_ConfigDescriptor[7];
   /* Wait until device is configured */
-  //UART0_Config_Default();
-  //UART1_Config_Default(); // GS
+  SuspendCnt=0;
   while (pInformation->Current_Configuration == 0) NOP_Process();
     bDeviceState = CONFIGURED;
 }

@@ -168,10 +168,10 @@ void Virtual_Com_Port_Reset(void)
 *******************************************************************************/
 void Virtual_Com_Port_Status_In(void)
 {
-   if(pInformation->USBbRequest	== SET_LINE_CODING)
-    {
-     UART0_Config();
-    }    
+  // if(pInformation->USBbRequest	== SET_LINE_CODING)
+  //  {
+  //   UART0_Config();
+  //  }    
 }
 /*******************************************************************************
 * Function Name  : Virtual_Com_Port_Status_Out
